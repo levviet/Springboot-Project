@@ -2,23 +2,25 @@ package com.example.learn_spring_boot.service;
 
 import com.example.learn_spring_boot.dto.request.CreateUserRequest;
 import com.example.learn_spring_boot.dto.request.UpdateUserRequest;
+import com.example.learn_spring_boot.dto.response.UserResponse;
 import com.example.learn_spring_boot.entity.User;
 import com.example.learn_spring_boot.exception.AppException;
 import com.example.learn_spring_boot.exception.ErrorCode;
 import com.example.learn_spring_boot.mapper.UserMapper;
 import com.example.learn_spring_boot.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
-	@Autowired
-	private UserMapper userMapper;
+	private final UserMapper userMapper;
 
 	public User create(CreateUserRequest request) {
 
@@ -27,18 +29,21 @@ public class UserService {
 		}
 
 		User user = userMapper.toUser(request);
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+		user.setPassword(passwordEncoder.encode(request.getPassword()));
 
 		return userRepository.save(user);
 	}
 
-	public User update(String userId, UpdateUserRequest request) {
-		User user = findById(userId);
+	public UserResponse update(String userId, UpdateUserRequest request) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("User not found"));
 
-		user.setPassword(request.getPassword());
-		user.setFirstName(request.getFirstName());
-		user.setLastName(request.getLastName());
-		user.setDob(request.getDob());
-		return userRepository.save(user);
+		userMapper.updateUser(user, request);
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+		user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+		return userMapper.toUserResponse(userRepository.save(user));
 	}
 
 	public void delete(String userId) {
@@ -49,8 +54,8 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	public User findById(String id) {
-		return userRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("User not found"));
+	public UserResponse findById(String id) {
+		return userMapper.toUserResponse(userRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("User not found")));
 	}
 }

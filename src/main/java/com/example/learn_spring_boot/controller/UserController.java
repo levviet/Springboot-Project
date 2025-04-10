@@ -3,18 +3,19 @@ package com.example.learn_spring_boot.controller;
 import com.example.learn_spring_boot.dto.ApiResponse;
 import com.example.learn_spring_boot.dto.request.CreateUserRequest;
 import com.example.learn_spring_boot.dto.request.UpdateUserRequest;
+import com.example.learn_spring_boot.dto.response.UserResponse;
 import com.example.learn_spring_boot.entity.User;
 import com.example.learn_spring_boot.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
-	@Autowired
-	private UserService userService;
+	private final UserService userService;
 
 	@PostMapping("/users")
 	public ApiResponse<User> createUser(@RequestBody @Valid CreateUserRequest request) {
@@ -31,12 +32,12 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}")
-	User getUserById(@PathVariable("userId") String id) {
+	UserResponse getUserById(@PathVariable("userId") String id) {
 		return userService.findById(id);
 	}
 
 	@PutMapping("/{userId}")
-	User updateUser(@PathVariable("userId") String id, @RequestBody UpdateUserRequest request) {
+	UserResponse updateUser(@PathVariable("userId") String id, @RequestBody UpdateUserRequest request) {
 		return userService.update(id, request);
 	}
 
