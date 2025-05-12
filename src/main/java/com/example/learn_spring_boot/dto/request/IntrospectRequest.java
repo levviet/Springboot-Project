@@ -1,4 +1,4 @@
-package com.example.learn_spring_boot.dto.response;
+package com.example.learn_spring_boot.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AuthenticationResponse {
+public class IntrospectRequest {
 	String token;
-	boolean authenticated;
 }
