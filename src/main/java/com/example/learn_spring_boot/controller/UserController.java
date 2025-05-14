@@ -27,23 +27,38 @@ public class UserController {
 	}
 
 	@GetMapping("/users")
-	List<User> getUsers() {
-		return userService.findAll();
+	public ApiResponse<List<User>> getUsers() {
+		ApiResponse<List<User>> response = new ApiResponse<>();
+
+		response.setMessage("Success");
+		response.setResult(userService.findAll());
+		return response;
 	}
 
 	@GetMapping("/{userId}")
-	UserResponse getUserById(@PathVariable("userId") String id) {
-		return userService.findById(id);
+	public ApiResponse<UserResponse> getUserById(@PathVariable("userId") String id) {
+		ApiResponse<UserResponse> response = new ApiResponse<>();
+
+		response.setMessage("Success");
+		response.setResult(userService.findById(id));
+		return response;
 	}
 
 	@PutMapping("/{userId}")
-	UserResponse updateUser(@PathVariable("userId") String id, @RequestBody UpdateUserRequest request) {
-		return userService.update(id, request);
+	ApiResponse<UserResponse> updateUser(@PathVariable("userId") String id, @RequestBody UpdateUserRequest request) {
+		ApiResponse<UserResponse> response = new ApiResponse<>();
+
+		response.setMessage("Success");
+		response.setResult(userService.update(id, request));
+		return response;
 	}
 
 	@DeleteMapping("/{userId}")
-	String deleteUser(@PathVariable("userId") String id) {
+	ApiResponse<String> deleteUser(@PathVariable("userId") String id) {
+		ApiResponse<String> response = new ApiResponse<>();
+
+		response.setMessage("User deleted successfully");
 		userService.delete(id);
-		return "User deleted successfully";
+		return response;
 	}
 }
