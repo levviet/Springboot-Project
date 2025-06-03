@@ -4,7 +4,6 @@ import com.example.learn_spring_boot.dto.ApiResponse;
 import com.example.learn_spring_boot.dto.request.CreateUserRequest;
 import com.example.learn_spring_boot.dto.request.UpdateUserRequest;
 import com.example.learn_spring_boot.dto.response.UserResponse;
-import com.example.learn_spring_boot.entity.User;
 import com.example.learn_spring_boot.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +17,8 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/users")
-	public ApiResponse<User> createUser(@RequestBody @Valid CreateUserRequest request) {
-		ApiResponse<User> response = new ApiResponse<>();
+	public ApiResponse<UserResponse> createUser(@RequestBody @Valid CreateUserRequest request) {
+		ApiResponse<UserResponse> response = new ApiResponse<>();
 
 		response.setMessage("Success");
 		response.setResult(userService.create(request));
@@ -27,8 +26,8 @@ public class UserController {
 	}
 
 	@GetMapping("/users")
-	public ApiResponse<List<User>> getUsers() {
-		ApiResponse<List<User>> response = new ApiResponse<>();
+	public ApiResponse<List<UserResponse>> getUsers() {
+		ApiResponse<List<UserResponse>> response = new ApiResponse<>();
 
 		response.setMessage("Success");
 		response.setResult(userService.findAll());

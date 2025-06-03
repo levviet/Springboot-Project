@@ -1,17 +1,15 @@
 package com.example.learn_spring_boot.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -23,4 +21,6 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private LocalDate dob;
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Set<String> roles;
 }
