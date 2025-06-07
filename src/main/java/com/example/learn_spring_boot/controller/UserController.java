@@ -60,4 +60,13 @@ public class UserController {
 		userService.delete(id);
 		return response;
 	}
+
+	@GetMapping("/userInfo")
+	ApiResponse<UserResponse> getUserInfo() {
+		ApiResponse<UserResponse> response = new ApiResponse<>();
+
+		response.setMessage("Success");
+		response.setResult(userService.getUserInfo());
+		return response;
+	}
 }

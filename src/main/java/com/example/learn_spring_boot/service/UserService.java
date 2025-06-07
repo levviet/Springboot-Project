@@ -11,6 +11,8 @@ import com.example.learn_spring_boot.mapper.UserMapper;
 import com.example.learn_spring_boot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,12 +64,12 @@ public class UserService {
 		userRepository.deleteById(userId);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	public List<UserResponse> findAll() {
 		var authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		log.info("Username: {}", authentication.getName());
 		authentication.getAuthorities().forEach(role -> log.info(role.getAuthority()));
-
 
 		return userRepository.findAll()
 				.stream()
@@ -75,8 +77,20 @@ public class UserService {
 				.collect(Collectors.toList());
 	}
 
+	@PostAuthorize("returnObject.username == authentication.name")
 	public UserResponse findById(String id) {
 		return userMapper.toUserResponse(userRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("User not found")));
+	}
+
+	public UserResponse getUserInfo() {
+		var context = SecurityContextHolder.getContext();
+
+		String username = context.getAuthentication().getName();
+
+		User user = userRepository.findUserByUsername(username)
+				.orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+		return userMapper.toUserResponse(user);
 	}
 }
