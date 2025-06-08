@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
@@ -101,9 +100,9 @@ public class AuthenticationService {
 
 	private String buildScope(User user) {
 		StringJoiner stringJoiner = new StringJoiner(" ");
-		if (!CollectionUtils.isEmpty(user.getRoles())) {
-			user.getRoles().forEach(stringJoiner::add);
-		}
+//		if (!CollectionUtils.isEmpty(user.getRoles())) {
+//			user.getRoles().forEach(stringJoiner::add);
+//		}
 
 		return stringJoiner.toString();
 	}
