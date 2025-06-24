@@ -1,6 +1,5 @@
 package com.example.learn_spring_boot.dto.response;
 
-import com.example.learn_spring_boot.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +18,5 @@ public class UserResponse {
 	private String firstName;
 	private String lastName;
 	private LocalDate dob;
-	private Set<Role> roles;
+	private Set<RoleResponse> roles;
 }

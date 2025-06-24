@@ -8,6 +8,7 @@ import com.example.learn_spring_boot.enums.Role;
 import com.example.learn_spring_boot.exception.AppException;
 import com.example.learn_spring_boot.exception.ErrorCode;
 import com.example.learn_spring_boot.mapper.UserMapper;
+import com.example.learn_spring_boot.repository.RoleRepository;
 import com.example.learn_spring_boot.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,8 @@ public class UserService {
 	private final UserRepository userRepository;
 
 	private final UserMapper userMapper;
+
+	private final RoleRepository roleRepository;
 
 	public UserResponse create(CreateUserRequest request) {
 
@@ -57,6 +60,9 @@ public class UserService {
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 
+		var role = roleRepository.findAllById(request.getRoles());
+		user.setRoles(new HashSet<>(role));
+
 		return userMapper.toUserResponse(userRepository.save(user));
 	}
 
@@ -64,7 +70,8 @@ public class UserService {
 		userRepository.deleteById(userId);
 	}
 
-	@PreAuthorize("hasRole('ADMIN')")
+	//	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('CREATE_POST')")
 	public List<UserResponse> findAll() {
 		var authentication = SecurityContextHolder.getContext().getAuthentication();
 
