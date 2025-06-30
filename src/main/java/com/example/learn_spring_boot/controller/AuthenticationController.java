@@ -4,6 +4,7 @@ import com.example.learn_spring_boot.dto.ApiResponse;
 import com.example.learn_spring_boot.dto.request.AuthenticationRequest;
 import com.example.learn_spring_boot.dto.request.IntrospectRequest;
 import com.example.learn_spring_boot.dto.request.LogoutRequest;
+import com.example.learn_spring_boot.dto.request.RefreshRequest;
 import com.example.learn_spring_boot.dto.response.AuthenticationResponse;
 import com.example.learn_spring_boot.dto.response.IntrospectResponse;
 import com.example.learn_spring_boot.service.AuthenticationService;
@@ -48,6 +49,16 @@ public class AuthenticationController {
 		authenticationService.logout(request);
 
 		response.setMessage("Success");
+		return response;
+	}
+
+	@PostMapping("/refresh")
+	ApiResponse<AuthenticationResponse> authenticate(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+		ApiResponse<AuthenticationResponse> response = new ApiResponse<>();
+
+		response.setMessage("Success");
+		response.setResult(authenticationService.refreshToken(request));
+
 		return response;
 	}
 }
