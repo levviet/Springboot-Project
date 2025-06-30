@@ -3,6 +3,7 @@ package com.example.learn_spring_boot.controller;
 import com.example.learn_spring_boot.dto.ApiResponse;
 import com.example.learn_spring_boot.dto.request.AuthenticationRequest;
 import com.example.learn_spring_boot.dto.request.IntrospectRequest;
+import com.example.learn_spring_boot.dto.request.LogoutRequest;
 import com.example.learn_spring_boot.dto.response.AuthenticationResponse;
 import com.example.learn_spring_boot.dto.response.IntrospectResponse;
 import com.example.learn_spring_boot.service.AuthenticationService;
@@ -38,6 +39,15 @@ public class AuthenticationController {
 		response.setMessage("Success");
 		response.setResult(authenticationService.introspect(request));
 
+		return response;
+	}
+
+	@PostMapping("/logout")
+	ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws ParseException, JOSEException {
+		ApiResponse<Void> response = new ApiResponse<>();
+		authenticationService.logout(request);
+
+		response.setMessage("Success");
 		return response;
 	}
 }
