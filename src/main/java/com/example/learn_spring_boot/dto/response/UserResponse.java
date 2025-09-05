@@ -1,22 +1,22 @@
 package com.example.learn_spring_boot.dto.response;
 
+import java.time.LocalDate;
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class UserResponse {
-	private String id;
-	private String username;
-	private String firstName;
-	private String lastName;
-	private LocalDate dob;
-	private Set<RoleResponse> roles;
+    private String id;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private LocalDate dob;
+    private Set<RoleResponse> roles;
 }

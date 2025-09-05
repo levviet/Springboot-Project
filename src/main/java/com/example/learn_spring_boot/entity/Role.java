@@ -1,11 +1,12 @@
 package com.example.learn_spring_boot.entity;
 
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import lombok.*;
 
-import java.util.Set;
+import lombok.*;
 
 @Entity
 @Getter
@@ -14,10 +15,11 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
-	@Id
-	private String name;
-	private String description;
+    @Id
+    private String name;
 
-	@ManyToMany
-	Set<Permission> permissions;
+    private String description;
+
+    @ManyToMany
+    Set<Permission> permissions;
 }

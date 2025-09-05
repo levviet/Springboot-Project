@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class IntrospectResponse {
-	private boolean valid;
+    private boolean valid;
 }

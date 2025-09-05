@@ -7,7 +7,7 @@ import com.example.learn_spring_boot.dto.request.LogoutRequest;
 import com.example.learn_spring_boot.dto.request.RefreshRequest;
 import com.example.learn_spring_boot.dto.response.AuthenticationResponse;
 import com.example.learn_spring_boot.dto.response.IntrospectResponse;
-import com.example.learn_spring_boot.service.AuthenticationService;
+import com.example.learn_spring_boot.service.authen.AuthenticationServiceImpl;
 import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +21,7 @@ import java.text.ParseException;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-	private final AuthenticationService authenticationService;
+	private final AuthenticationServiceImpl authenticationService;
 
 	@PostMapping("/login")
 	ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
@@ -34,7 +34,8 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/introspect")
-	ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
+	ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request)
+			throws ParseException, JOSEException {
 		ApiResponse<IntrospectResponse> response = new ApiResponse<>();
 
 		response.setMessage("Success");
@@ -53,7 +54,8 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/refresh")
-	ApiResponse<AuthenticationResponse> authenticate(@RequestBody RefreshRequest request) throws ParseException, JOSEException {
+	ApiResponse<AuthenticationResponse> authenticate(@RequestBody RefreshRequest request)
+			throws ParseException, JOSEException {
 		ApiResponse<AuthenticationResponse> response = new ApiResponse<>();
 
 		response.setMessage("Success");

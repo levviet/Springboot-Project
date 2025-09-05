@@ -1,4 +1,4 @@
-package com.example.learn_spring_boot.service;
+package com.example.learn_spring_boot.service.authen;
 
 import com.example.learn_spring_boot.dto.request.AuthenticationRequest;
 import com.example.learn_spring_boot.dto.request.IntrospectRequest;
@@ -39,7 +39,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AuthenticationService {
+public class AuthenticationServiceImpl {
 	UserRepository userRepository;
 	InvalidatedTokenRepository invalidatedTokenRepository;
 
@@ -112,8 +112,9 @@ public class AuthenticationService {
 
 		var username = signedJWT.getJWTClaimsSet().getSubject();
 
-		var user =
-				userRepository.findUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
+		var user = userRepository
+				.findUserByUsername(username)
+				.orElseThrow(() -> new AppException(ErrorCode.UNAUTHENTICATED));
 
 		var token = generateToken(user);
 

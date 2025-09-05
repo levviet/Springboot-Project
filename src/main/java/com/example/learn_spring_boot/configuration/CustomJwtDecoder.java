@@ -1,7 +1,7 @@
 package com.example.learn_spring_boot.configuration;
 
 import com.example.learn_spring_boot.dto.request.IntrospectRequest;
-import com.example.learn_spring_boot.service.AuthenticationService;
+import com.example.learn_spring_boot.service.authen.AuthenticationServiceImpl;
 import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,16 +22,15 @@ public class CustomJwtDecoder implements JwtDecoder {
 	private String signerKey;
 
 	@Autowired
-	private AuthenticationService authenticationService;
+	private AuthenticationServiceImpl authenticationService;
 
 	private NimbusJwtDecoder nimbusJwtDecoder = null;
 
 	@Override
 	public Jwt decode(String token) throws JwtException {
 		try {
-			var response = authenticationService.introspect(IntrospectRequest.builder()
-					.token(token)
-					.build());
+			var response = authenticationService.introspect(
+					IntrospectRequest.builder().token(token).build());
 
 			if (!response.isValid()) {
 				throw new JwtException("Token is invalid");
@@ -42,8 +41,7 @@ public class CustomJwtDecoder implements JwtDecoder {
 
 		if (Objects.isNull(nimbusJwtDecoder)) {
 			SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HmacSHA256");
-			nimbusJwtDecoder = NimbusJwtDecoder
-					.withSecretKey(secretKeySpec)
+			nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)
 					.macAlgorithm(MacAlgorithm.HS512)
 					.build();
 		}

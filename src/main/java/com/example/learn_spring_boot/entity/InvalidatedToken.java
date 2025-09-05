@@ -1,10 +1,11 @@
 package com.example.learn_spring_boot.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.*;
 
-import java.util.Date;
+import lombok.*;
 
 @Entity
 @Getter
@@ -13,7 +14,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InvalidatedToken {
-	@Id
-	String id;
-	Date expiryTime;
+    @Id
+    String id;
+
+    Date expiryTime;
 }

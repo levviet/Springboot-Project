@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PermissionRequest {
-	private String name;
-	private String description;
+    private String name;
+    private String description;
 }
