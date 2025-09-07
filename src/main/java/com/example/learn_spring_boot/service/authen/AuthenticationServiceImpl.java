@@ -69,6 +69,8 @@ public class AuthenticationServiceImpl {
 	}
 
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
+		log.info("SignerKey: {}", SIGNER_KEY);
+
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 		var user = userRepository
 				.findUserByUsername(request.getUsername())
